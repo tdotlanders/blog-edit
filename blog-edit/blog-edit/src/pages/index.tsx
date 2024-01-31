@@ -1,31 +1,39 @@
-import React from "react";
+import { Col, Container, Row } from "reactstrap";
+import { CardComponent } from "../components/postCard";
+import useRootPage from "../hooks/useRootPage";
 
-interface CardProps {
-  id: string;
-  title: string;
-  imageURL: string;
-  description: string;
-  createdAt: string;
-}
-
-const cardData: CardProps = {
-  id: "1291dec2-7836-41d2-a80c-37bea30316ba",
-  title: "Meu primeiro post",
-  imageURL: "https://picsum.photos/300/200",
-  description:
-    "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
-  createdAt: "2023-01-21T00:00:00.000Z",
-};
-
-const RootPage = () => {
+function RootPage() {
+  const { postsList, handleCardClick, selectValue, handleSelect } =
+    useRootPage();
   return (
-    <div className="card">
-      <img src="" alt="" className="card-image" />
-      <div className="card-content">
-        <h2>{cardData.title}</h2>
+    <Container>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "flex-end",
+          marginBottom: "2rem",
+        }}
+      >
+        <select value={selectValue} onChange={handleSelect}>
+          <option value="newest">Mais recente</option>
+          <option value="oldest">Mais antiga</option>
+        </select>
       </div>
-    </div>
+      <Row xs="4">
+        {postsList.map((card) => (
+          <Col key={card.id}>
+            <CardComponent
+              id={card.id}
+              imgUrl={card.imageUrl}
+              title={card.title}
+              description={card.description}
+              handleCardClick={handleCardClick}
+            />
+          </Col>
+        ))}
+      </Row>
+    </Container>
   );
-};
+}
 
 export default RootPage;
